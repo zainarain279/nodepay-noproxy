@@ -5,8 +5,6 @@ import cloudscraper
 import requests
 from loguru import logger
 from fake_useragent import UserAgent
-
-
 print("""
 ░▀▀█░█▀█░▀█▀░█▀█ 
 ░▄▀░░█▀█░░█░░█░█ 
@@ -27,7 +25,6 @@ print("""
 ╚══════════════════════════════════╝
 """)
 
-# Constants
 PING_INTERVAL = 60
 RETRIES = 60
 
@@ -135,12 +132,11 @@ async def ping(token):
 
     current_time = time.time()
 
-    # Check if the token has a separate last ping time and if enough time has passed
     if token in last_ping_time and (current_time - last_ping_time[token]) < PING_INTERVAL:
         logger.info(f"Skipping ping for token {token}, not enough time elapsed")
         return
 
-    last_ping_time[token] = current_time  # Update the last ping time for this token
+    last_ping_time[token] = current_time 
 
     try:
         data = {
@@ -187,7 +183,7 @@ def save_session_info(data):
     pass
 
 def load_session_info():
-    return {}  # Placeholder for loading session info
+    return {}
 
 async def run_with_token(token):
     tasks = {}
@@ -202,9 +198,11 @@ async def run_with_token(token):
         tasks.pop(task)
 
     await asyncio.sleep(10)
+    
+##shareithub()
 
 async def main():
-    # Load tokens from the file
+
     try:
         with open('token.txt', 'r') as file:
             tokens = file.read().splitlines()
@@ -220,7 +218,7 @@ async def main():
     for token in tokens:
         tasks.append(run_with_token(token))
 
-    # Run all tasks concurrently
+
     await asyncio.gather(*tasks)
 
 if __name__ == '__main__':
